@@ -8,8 +8,8 @@ on:
 permissions:
   # only required for workflows in private repositories
   actions: write
+  attestations: write
   contents: write
-  discussions: write
   issues: write
   packages: write
   pages: write
