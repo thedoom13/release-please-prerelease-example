@@ -6,17 +6,17 @@ on:
       - main
 
 permissions:
-  contents: write
-  pull-requests: write
-  repository-projects: write
-  issues: write
-  discussions: write
-  packages: write
-  pages: write
-  statuses: write
   # only required for workflows in private repositories
   actions: write
+  contents: write
+  discussions: write
+  issues: write
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
   security-events: write
+  statuses: write
 
 concurrency:
   group: release
