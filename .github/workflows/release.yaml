@@ -9,6 +9,7 @@ permissions:
   # only required for workflows in private repositories
   actions: write
   attestations: write
+  checks: write
   contents: write
   issues: write
   packages: write
