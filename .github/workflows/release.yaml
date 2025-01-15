@@ -1,0 +1,121 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  repository-projects: read
+  # only required for workflows in private repositories
+  actions: read
+  security-events: write
+
+concurrency:
+  group: release
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        name: Run release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: ".github/prerelease-config.json"
+          manifest-file: ".github/prerelease-manifest.json"
+
+  deploy-test:
+    name: Deploy to Test
+    runs-on: ubuntu-latest
+    environment: test
+    if: ${{ needs.release-please.outputs.releases_created == 'false' }}
+    needs: release-please
+    steps:
+      - name: Configure
+        run: |
+          echo "${{ vars.EXAMPLE_VAR }}"
+          echo "${{ secrets.EXAMPLE_SECRET }}"
+
+      - name: Deploy
+        run: echo "Deploying to test!"
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    if: ${{ needs.release-please.outputs.releases_created == 'true' && contains(needs.release-please.outputs.tag_name, 'beta') }}
+    needs: release-please
+    steps:
+      - name: Configure
+        run: |
+          echo "${{ vars.EXAMPLE_VAR }}"
+          echo "${{ secrets.EXAMPLE_SECRET }}"
+
+      - name: Deploy
+        run: echo "Deploying to staging!"
+
+      - name: Run release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: ".github/release-config.json"
+          manifest-file: ".github/release-manifest.json"
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+    if: ${{ needs.release-please.outputs.releases_created == 'true' && !contains(needs.release-please.outputs.tag_name, 'beta') }}
+    needs: release-please
+    steps:
+      - name: Configure
+        run: |
+          echo "${{ vars.EXAMPLE_VAR }}"
+          echo "${{ secrets.EXAMPLE_SECRET }}"
+
+      - name: Deploy
+        run: echo "Deploying to production!"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync prerelease manifest
+        env:
+          MANIFEST_PATH: .github/prerelease-manifest.json
+          RELEASE_TAG: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          jq --arg tag "${RELEASE_TAG//v/}" '.["."] = $tag' $MANIFEST_PATH > temp.json \
+            && mv temp.json $MANIFEST_PATH
+
+      - name: Commit change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add . $MANIFEST_PATH
+          git commit -m "chore: sync release manifests"
+          git push
+
+  publish:
+    name: Publish images
+    runs-on: ubuntu-latest
+    environment: production
+    needs: deploy-production
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - name: Configure
+        run: |
+          echo "${{ vars.EXAMPLE_VAR }}"
+          echo "${{ secrets.EXAMPLE_SECRET }}"
+
+      - name: Build
+        run: echo "Building for '${{ matrix.arch }}' ..."
+
+      - name: Publish
+        run: echo "Publishing for '${{ matrix.arch }}' ..."

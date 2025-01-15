@@ -1,0 +1,12 @@
+{
+  "release-type": "simple",
+  "prerelease": true,
+  "prerelease-type": "beta",
+  "versioning": "prerelease",
+  "packages": {
+    ".": {
+      "type": "generic",
+      "extra-files": [".platform/terraform/environments/staging/main.tf"]
+    }
+  }
+}
