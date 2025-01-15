@@ -12,6 +12,7 @@ permissions:
   checks: write
   contents: write
   deployments: write
+  id-token: write|none
   issues: write
   packages: write
   pages: write
