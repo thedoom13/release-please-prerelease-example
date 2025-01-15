@@ -5,7 +5,13 @@ on:
     branches:
       - main
 
-permissions: write-all
+permissions:
+  contents: write
+  pull-requests: write
+  repository-projects: read
+  # only required for workflows in private repositories
+  actions: read
+  security-events: write
 
 concurrency:
   group: release
