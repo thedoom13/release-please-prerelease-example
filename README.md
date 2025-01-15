@@ -2,4 +2,4 @@
 
 An example app showcasing various features like IDP deployment and GitHub Actions (GHA).
 
-feat test
+feat test2
