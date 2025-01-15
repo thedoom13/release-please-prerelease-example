@@ -11,7 +11,7 @@ permissions:
   repository-projects: read
   issues: write
   # only required for workflows in private repositories
-  actions: read
+  actions: write
   security-events: write
 
 concurrency:
