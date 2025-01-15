@@ -9,6 +9,7 @@ permissions:
   contents: write
   pull-requests: write
   repository-projects: read
+  issues: write
   # only required for workflows in private repositories
   actions: read
   security-events: write
