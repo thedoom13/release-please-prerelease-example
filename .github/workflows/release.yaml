@@ -10,6 +10,7 @@ permissions:
   pull-requests: write
   repository-projects: write
   issues: write
+  discussions: write
   # only required for workflows in private repositories
   actions: write
   security-events: write
