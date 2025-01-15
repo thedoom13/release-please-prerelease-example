@@ -1,6 +1,7 @@
 {
   "release-type": "simple",
   "prerelease": true,
+  "prerelease-type": "number",
   "versioning": "prerelease",
   "packages": {
     ".": {
