@@ -17,69 +17,55 @@ concurrency:
   group: release
 
 jobs:
-  release-please:
+  prerelease-prep:
+    name: Create Prerelease Pull Request
     runs-on: ubuntu-latest
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - id: release
-        name: Run release-please
+        name: Run prerelease release-please
         uses: googleapis/release-please-action@v4
         with:
           config-file: ".github/prerelease-config.json"
           manifest-file: ".github/prerelease-manifest.json"
 
-  deploy-test:
-    name: Deploy to Test
+  prerelease-test:
+    name: Run Prerelease Tests
     runs-on: ubuntu-latest
-    environment: test
-    if: ${{ needs.release-please.outputs.releases_created == 'false' }}
-    needs: release-please
+    if: ${{ needs.prerelease-prep.outputs.releases_created == 'false' }}
+    needs: prerelease-prep
     steps:
-      - name: Configure
+      - name: End To End Test
         run: |
-          echo "${{ vars.EXAMPLE_VAR }}"
-          echo "${{ secrets.EXAMPLE_SECRET }}"
+          echo "Running end to end tests for prerelease!"
 
-      - name: Deploy
-        run: echo "Deploying to test!"
-
-  deploy-staging:
-    name: Deploy to Staging
+  prerelease:
+    name: Create Prerelease and Release Pull Request
     runs-on: ubuntu-latest
-    environment: staging
-    if: ${{ needs.release-please.outputs.releases_created == 'true' && contains(needs.release-please.outputs.tag_name, 'rc') }}
-    needs: release-please
+    if: ${{ needs.prerelease-prep.outputs.releases_created == 'true' && contains(needs.prerelease-prep.outputs.tag_name, fromJson('["rc", "pre", "test", "alpha", "beta"]')) }}
+    needs: prerelease-prep
     steps:
-      - name: Configure
+      - name: Pre Release Step
         run: |
-          echo "${{ vars.EXAMPLE_VAR }}"
-          echo "${{ secrets.EXAMPLE_SECRET }}"
+          echo "Running pre-release step!"
 
-      - name: Deploy
-        run: echo "Deploying to staging!"
-
-      - name: Run release-please
+      - name: Run release release-please
         uses: googleapis/release-please-action@v4
         with:
           config-file: ".github/release-config.json"
           manifest-file: ".github/release-manifest.json"
 
-  deploy-production:
-    name: Deploy to Production
+  release:
+    name: Create Release
     runs-on: ubuntu-latest
-    environment: production
-    if: ${{ needs.release-please.outputs.releases_created == 'true' && !contains(needs.release-please.outputs.tag_name, 'rc') }}
-    needs: release-please
+    if: ${{ needs.prerelease-prep.outputs.releases_created == 'true' && !contains(needs.prerelease-prep.outputs.tag_name, fromJson('["rc", "pre", "test", "alpha", "beta"]')) }}
+    needs: prerelease-prep
     steps:
-      - name: Configure
+      - name: Release Step
         run: |
-          echo "${{ vars.EXAMPLE_VAR }}"
-          echo "${{ secrets.EXAMPLE_SECRET }}"
-
-      - name: Deploy
-        run: echo "Deploying to production!"
+          echo "Running release step!"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -87,7 +73,7 @@ jobs:
       - name: Sync prerelease manifest
         env:
           MANIFEST_PATH: .github/prerelease-manifest.json
-          RELEASE_TAG: ${{ needs.release-please.outputs.tag_name }}
+          RELEASE_TAG: ${{ needs.prerelease-prep.outputs.tag_name }}
         run: |
           jq --arg tag "${RELEASE_TAG//v/}" '.["."] = $tag' $MANIFEST_PATH > temp.json \
             && mv temp.json $MANIFEST_PATH
@@ -100,22 +86,11 @@ jobs:
           git commit -m "chore: sync release manifests"
           git push
 
-  publish:
-    name: Publish images
+  post-release:
+    name: Post Release Steps
     runs-on: ubuntu-latest
-    environment: production
-    needs: deploy-production
-    strategy:
-      matrix:
-        arch: [amd64, arm64]
+    needs: release
     steps:
-      - name: Configure
+      - name: Post Release Step
         run: |
-          echo "${{ vars.EXAMPLE_VAR }}"
-          echo "${{ secrets.EXAMPLE_SECRET }}"
-
-      - name: Build
-        run: echo "Building for '${{ matrix.arch }}' ..."
-
-      - name: Publish
-        run: echo "Publishing for '${{ matrix.arch }}' ..."
+          echo "Running post-release steps!"
