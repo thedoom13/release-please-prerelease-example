@@ -44,7 +44,7 @@ jobs:
   prerelease:
     name: Create Prerelease and Release Pull Request
     runs-on: ubuntu-latest
-    if: ${{ needs.prerelease-prep.outputs.releases_created == 'true' && contains(needs.prerelease-prep.outputs.tag_name, fromJson('["rc", "pre", "test", "alpha", "beta"]')) }}
+    if: ${{ needs.prerelease-prep.outputs.releases_created == 'true' && contains(fromJson('["rc", "pre", "test", "alpha", "beta"]'), needs.prerelease-prep.outputs.tag_name) }}
     needs: prerelease-prep
     steps:
       - name: Pre Release Step
@@ -60,7 +60,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    if: ${{ needs.prerelease-prep.outputs.releases_created == 'true' && !contains(needs.prerelease-prep.outputs.tag_name, fromJson('["rc", "pre", "test", "alpha", "beta"]')) }}
+    if: ${{ needs.prerelease-prep.outputs.releases_created == 'true' && !contains(fromJson('["rc", "pre", "test", "alpha", "beta"]'), needs.prerelease-prep.outputs.tag_name) }}
     needs: prerelease-prep
     steps:
       - name: Release Step
