@@ -3,8 +3,7 @@ name: GitHub Actions Debug
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 
 on:
-  repository_dispatch:
-    types: [release_event]
+  pull_request:
 
 jobs:
   Explore-GitHub-Actions:
