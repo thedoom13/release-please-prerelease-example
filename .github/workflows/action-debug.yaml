@@ -5,6 +5,7 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   pull_request:
   push:
+    branches: ["release-please--branches--main"]
 
 jobs:
   Explore-GitHub-Actions:
