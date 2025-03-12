@@ -4,7 +4,9 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 
 on:
   push:
-    branches: ["main", "release-please--branches--main"]
+    branches:
+     - main
+     - release-please--branches--main
   pull_request:
     branches: ["main", "release-please--branches--main"]
   pull_request_review:
