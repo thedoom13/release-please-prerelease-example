@@ -2,7 +2,21 @@ name: GitHub Actions Debug
 
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 
-on: [push, pull_request, create, delete, watch, repository_dispatch, workflow_dispatch]
+on:
+  push:
+    branches: ["main", "release-please--branches--main"]
+  pull_request:
+    branches: ["main", "release-please--branches--main"]
+  pull_request_review:
+    branches: ["main", "release-please--branches--main"]
+  pull_request_target:
+    branches: ["main", "release-please--branches--main"]
+  create:
+    branches: ["main", "release-please--branches--main"]
+  repository_dispatch:
+    branches: ["main", "release-please--branches--main"]
+  workflow_run:
+    branches: ["main", "release-please--branches--main"]
 
 jobs:
   Explore-GitHub-Actions:
