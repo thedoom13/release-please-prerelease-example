@@ -36,9 +36,12 @@ jobs:
     if: ${{ needs.prerelease-prep.outputs.releases_created == 'false' }}
     needs: prerelease-prep
     steps:
-      - name: End To End Test
+      - name: Release Build Push Deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.prerelease-prep.outputs.tag_name }}
         run: |
-          echo "Running end to end tests for prerelease!"
+          gh workflow run action-debug.yaml
 
   prerelease:
     name: Create Prerelease and Release Pull Request
