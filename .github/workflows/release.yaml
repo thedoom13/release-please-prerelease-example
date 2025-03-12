@@ -2,8 +2,9 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
+  repository_dispatch:
+    branches: ["release-please--branches--main"]
 
 permissions:
   contents: write

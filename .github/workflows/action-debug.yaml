@@ -3,20 +3,8 @@ name: GitHub Actions Debug
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 
 on:
-  push:
-    branches:
-     - main
-     - release-please--branches--main
-  pull_request:
-    branches: ["main", "release-please--branches--main"]
-  pull_request_review:
-    branches: ["main", "release-please--branches--main"]
-  pull_request_target:
-    branches: ["main", "release-please--branches--main"]
-  create:
-    branches: ["main", "release-please--branches--main"]
   repository_dispatch:
-    branches: ["main", "release-please--branches--main"]
+    types: [release_event]
 
 jobs:
   Explore-GitHub-Actions:
