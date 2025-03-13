@@ -37,11 +37,8 @@ jobs:
     needs: prerelease-prep
     steps:
       - name: Release Build Push Deploy
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ needs.prerelease-prep.outputs.tag_name }}
         run: |
-          gh workflow run action-debug.yaml
+          echo "Prerelease Tests"
 
   prerelease:
     name: Create Prerelease and Release Pull Request
