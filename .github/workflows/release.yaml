@@ -51,6 +51,7 @@ jobs:
         with:
           config-file: ".github/release-config.json"
           manifest-file: ".github/release-manifest.json"
+          token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
 
   release:
     name: Create Release
