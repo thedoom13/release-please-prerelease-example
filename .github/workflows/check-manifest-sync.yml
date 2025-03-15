@@ -20,9 +20,17 @@ jobs:
         # The prerelease is not allowed to be an older version than the release
         run: |
           echo "Comparing prerelease and release manifests"
+          npm install semver
           PRERELEASE_VERSION=$(jq -r '.["."]' $PRERELEASE_MANIFEST_PATH)
           RELEASE_VERSION=$(jq -r '.["."]' $RELEASE_MANIFEST_PATH)
-          if [[ $PRERELEASE_VERSION < $RELEASE_VERSION ]]; then
-            echo "Prerelease version is older than release version"
-            exit 1
-          fi
+          node -e "
+          const semver = require('semver');
+          const prereleaseVersion = process.env.PRERELEASE_VERSION;
+          const releaseVersion = process.env.RELEASE_VERSION;
+          if (semver.lt(prereleaseVersion, releaseVersion)) {
+            console.log('Prerelease version is older than release version');
+            process.exit(1);
+          } else {
+            console.log('Prerelease version is valid');
+          }
+          "
