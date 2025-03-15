@@ -81,7 +81,7 @@ jobs:
           git checkout -b sync-prerelease-manifest
           git add . $MANIFEST_PATH
           git commit -m "chore: sync release manifests"
-          git push --set-upstream origin sync-prerelease-manifest
+          git push --force --set-upstream origin sync-prerelease-manifest
 
       - name: Create sync release manifests Pull Request
         env:
