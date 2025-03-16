@@ -2,7 +2,8 @@
   "release-type": "simple",
   "packages": {
     ".": {
-      "type": "generic"
+      "type": "generic",
+      "extra-files": [".github/release-manifest.json"]
     }
   }
 }

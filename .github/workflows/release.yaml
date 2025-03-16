@@ -63,32 +63,6 @@ jobs:
         run: |
           echo "Running release step!"
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Sync prerelease manifest
-        env:
-          MANIFEST_PATH: .github/prerelease-manifest.json
-          RELEASE_TAG: ${{ needs.prerelease-prep.outputs.tag_name }}
-        run: |
-          jq --arg tag "${RELEASE_TAG//v/}" '.["."] = $tag' $MANIFEST_PATH > temp.json \
-            && mv temp.json $MANIFEST_PATH
-
-      - name: Commit sync prerelease manifest
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b sync-prerelease-manifest
-          git add . $MANIFEST_PATH
-          git commit -m "chore: sync release manifests"
-          git push --force --set-upstream origin sync-prerelease-manifest
-
-      - name: Create sync release manifests Pull Request
-        env:
-          GH_TOKEN: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
-        run: |
-          gh pr create --title "chore: sync release manifests" --body "This PR syncs the release manifests."
-
   post-release:
     name: Post Release Steps
     runs-on: ubuntu-latest
