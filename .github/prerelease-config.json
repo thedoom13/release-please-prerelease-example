@@ -5,7 +5,13 @@
   "versioning": "prerelease",
   "packages": {
     ".": {
-      "type": "generic"
+      "type": "generic",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "library/build.gradle.kts"
+        }
+      ]
     }
   }
 }
