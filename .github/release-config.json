@@ -7,7 +7,7 @@
         {
           "type": "json",
           "path": ".github/prerelease-manifest.json",
-          "jsonpath": "$."
+          "jsonpath": "$[\".\"]"
         }
       ]
     }
