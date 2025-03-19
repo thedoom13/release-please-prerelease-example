@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
+
       - name: Compare prerelease and release manifests semver
         env:
           PRERELEASE_MANIFEST_PATH: .github/prerelease-manifest.json
