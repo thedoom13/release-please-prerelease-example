@@ -121,8 +121,8 @@ This section provides details on how to extend and modify the configuration file
   { "type": "feat", "hidden": false, "section": "Features" },
   { "type": "fix", "hidden": false, "section": "Bug Fixes" },
   { "type": "perf", "hidden": false, "section": "Performance Improvements" },
-  { "type": "security", "hidden": false, "section": "Security Updates" },
-  { "type": "deps", "hidden": false, "section": "Dependencies" },
+  { "type": "refactor", "hidden": false, "section": "Code Refactoring" },
+  { "type": "test", "hidden": false, "section": "Testing" },
   { "type": "chore", "hidden": true, "section": "Miscellaneous Chores" }
 ]
 ```
