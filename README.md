@@ -71,3 +71,107 @@ The workflow is implemented using GitHub Actions and the release-please-action. 
 - GitHub repository permissions for contents, pull-requests, and repository-projects
 - Conventional commit messages for proper changelog generation and version bumping
 - Configuration files for prerelease and release stages
+
+## Configuration File Reference
+
+This section provides details on how to extend and modify the configuration files used by release-please.
+
+### Key Configuration Options Explained
+
+- **release-type**: Specifies the release strategy. Options include:
+  - `simple`: Basic generic versioning
+  - `node`: For Node.js projects
+  - `python`: For Python projects
+  - `java`: For Java projects
+  - `maven`: For Maven projects
+  - `go`: For Go projects
+  - `rust`: For Rust projects
+  - And many others (see [release-please documentation](https://github.com/googleapis/release-please/blob/main/docs/customizing.md))
+
+- **prerelease**: Boolean flag to indicate if this is a prerelease configuration
+
+- **prerelease-type**: The type of prerelease to create (e.g., `rc`, `beta`, `alpha`)
+
+- **versioning**: The versioning strategy to use:
+  - `prerelease`: For prerelease versioning (adds suffixes like `-rc.1`)
+  - `default`: Standard semantic versioning
+
+- **changelog-sections**: Defines how different commit types are categorized in the changelog:
+  - `type`: The commit type (from conventional commits)
+  - `hidden`: Whether to hide this section in the changelog
+  - `section`: The section title in the changelog
+
+- **packages**: Defines the package structure for monorepos or single packages:
+  - `.`: Represents the root package
+  - `type`: The package type (e.g., `generic`, `node`, `java`)
+  - `extra-files`: Additional files to update with version information
+
+- **extra-files**: Files to update during version changes:
+  - `type`: The file type (`generic`, `json`, `xml`, etc.)
+  - `path`: Path to the file
+  - `jsonpath`: For JSON files, the path to the version field
+  - `marker`: For generic files, a marker pattern to identify version strings
+
+### Customization Examples
+
+#### Adding Custom Changelog Sections
+
+```json
+"changelog-sections": [
+  { "type": "feat", "hidden": false, "section": "Features" },
+  { "type": "fix", "hidden": false, "section": "Bug Fixes" },
+  { "type": "perf", "hidden": false, "section": "Performance Improvements" },
+  { "type": "security", "hidden": false, "section": "Security Updates" },
+  { "type": "deps", "hidden": false, "section": "Dependencies" },
+  { "type": "chore", "hidden": true, "section": "Miscellaneous Chores" }
+]
+```
+
+#### Updating Version in Multiple Files
+
+```json
+"extra-files": [
+  {
+    "type": "json",
+    "path": "package.json",
+    "jsonpath": "$.version"
+  },
+  {
+    "type": "xml",
+    "path": "pom.xml",
+    "xpath": "//project/version"
+  },
+  {
+    "type": "generic",
+    "path": "src/version.py",
+    "marker": "VERSION = \"${version}\""
+  }
+]
+```
+
+#### Configuring for a Monorepo
+
+```json
+"packages": {
+  "packages/core": {
+    "component": "core",
+    "version-file": "version.txt"
+  },
+  "packages/ui": {
+    "component": "ui",
+    "version-file": "version.txt"
+  }
+}
+```
+
+### Best Practices
+
+1. **Use Consistent Release Types**: Choose a release type that matches your project's language and structure.
+
+2. **Define Clear Changelog Sections**: Customize changelog sections to match your team's commit conventions.
+
+3. **Update All Version References**: Ensure all files containing version information are included in `extra-files`.
+
+For more detailed information, refer to the official documentation:
+- [release-please-action](https://github.com/googleapis/release-please-action)
+- [release-please configuration](https://github.com/googleapis/release-please/blob/main/docs/customizing.md)
