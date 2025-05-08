@@ -51,11 +51,29 @@ In this example the workflow updates version information in:
 
 ### Changelog Management
 
-The CHANGELOG.md file is automatically updated with:
-- New features (from `feat:` commits)
-- Bug fixes (from `fix:` commits)
-- Miscellaneous changes (from `chore:` and `build:` commits)
-- Documentation updates (from `docs:` commits)
+The CHANGELOG.md file is automatically updated based on the `changelog-sections` configuration in both the prerelease and release configuration files. The current configuration includes:
+
+- Features (from `feat:` commits)
+- Bug Fixes (from `fix:` commits)
+- Code Refactoring (from `refactor:` commits)
+- Miscellaneous Chores (from `chore:` commits)
+- Build System and Dependencies (from `build:` commits)
+- Documentation (from `docs:` commits)
+
+Each section can be customized by modifying the `changelog-sections` array in the configuration files:
+
+```json
+"changelog-sections": [
+  { "type": "feat", "hidden": false, "section": "Features" },
+  { "type": "fix", "hidden": false, "section": "Bug Fixes" },
+  { "type": "refactor", "hidden": false, "section": "Code Refactoring" },
+  { "type": "chore", "hidden": false, "section": "Miscellaneous Chores" },
+  { "type": "build", "hidden": false, "section": "Build System and Dependencies" },
+  { "type": "docs", "hidden": false, "section": "Docs" }
+]
+```
+
+You can add additional commit types, change section titles, or hide specific sections by setting `"hidden": true`. For more information on this, check the [Configuration File Reference](#Configuration-File-Reference) section.
 
 ## Usage
 
