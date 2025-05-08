@@ -8,11 +8,18 @@ The release workflow consists of two main stages:
 1. **Prerelease** - Creates release candidates (RC) for testing before final release
 2. **Release** - Creates the final release after successful testing
 
-This approach supports SOC 2 compliance by:
+Given all additional testing- and publish-workflows are implemented compliant, and the GitHub repository has properly configured branch protection rules. This template shows an approach which supports SOC 2 compliance by:
+- Compatible with protected main branch rule (no direct commits to main)
 - Maintaining a clear audit trail of all changes
 - Enforcing a consistent release process
 - Automating version management
 - Providing traceability between code changes and releases
+- Enforcing separation of duties between development and release processes
+- Creating a controlled environment for testing through prereleases
+- Providing evidence of testing before final release
+- Generating comprehensive change management documentation
+- Supporting access control through PR approval workflows
+- Enabling risk assessment through the prerelease process
 
 ## Workflow Features
 
