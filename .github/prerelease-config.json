@@ -1,8 +1,11 @@
 {
   "release-type": "simple",
   "prerelease": true,
-  "prerelease-type": "rc",
+  "prerelease-type": "takai",
   "versioning": "prerelease",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "bootstrap-sha": "b92e14d074e5a9ddc332e23c89540a8c56e82e6e",
   "changelog-sections": [
     { "type": "feat", "hidden": false, "section": "Features" },
     { "type": "fix", "hidden": false, "section": "Bug Fixes" },
