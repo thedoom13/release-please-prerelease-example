@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1-takai.8](https://github.com/thedoom13/release-please-prerelease-example/compare/0.7.1-takai.7...v0.7.1-takai.8) (2025-07-09)
+
+
+### Bug Fixes
+
+* test 24 ([3ec1c2a](https://github.com/thedoom13/release-please-prerelease-example/commit/3ec1c2ae732f53ddbb31c13a4cc2ae0dcd39ed38))
+
 ## [1.10.2](https://github.com/sonderformat-llc/release-please-prerelease-example/compare/v1.10.1...v1.10.2) (2025-05-08)
 
 
