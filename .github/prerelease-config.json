@@ -1,19 +1,12 @@
 {
-  "release-type": "simple",
-  "prerelease": true,
-  "prerelease-type": "rc",
-  "versioning": "prerelease",
-  "changelog-sections": [
-    { "type": "feat", "hidden": false, "section": "Features" },
-    { "type": "fix", "hidden": false, "section": "Bug Fixes" },
-    { "type": "refactor", "hidden": false, "section": "Code Refactoring" },
-    { "type": "chore", "hidden": false, "section": "Miscellaneous Chores" },
-    { "type": "build", "hidden": false, "section": "Build System and Dependencies" },
-    { "type": "docs", "hidden": false, "section": "Docs" }
-  ],
   "packages": {
     ".": {
-      "type": "generic",
+      "release-type": "simple",
+      "prerelease": true,
+      "prerelease-type": "takai",
+      "versioning": "prerelease",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true,
       "extra-files": [
         {
           "type": "generic",
@@ -21,5 +14,6 @@
         }
       ]
     }
-  }
+  },
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
