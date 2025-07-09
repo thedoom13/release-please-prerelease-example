@@ -72,7 +72,7 @@ publishing {
                 groupId = "llc.sonderformat"
                 artifactId = "fusionauth-android-sdk"
                 // x-release-please-start-version
-                version = "0.7.1-takai.7"
+                version = "0.7.1-takai.8"
                 // x-release-please-end
 
                 // And here are some more properties that go into the pom file.
